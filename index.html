@@ -1,543 +1,1231 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ellnora WhatsApp Manager</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+<title>Ellnora WhatsApp Manager</title>
 
-    body {
-      background: #f4f7f6;
-      color: #222;
-    }
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,sans-serif;
+}
 
-    .header {
-      background: #128c7e;
-      color: white;
-      padding: 22px;
-      text-align: center;
-    }
+body{
+  background:#f4f7f6;
+  color:#222;
+}
 
-    .header h1 {
-      font-size: 28px;
-    }
+.header{
+  background:#128c7e;
+  color:white;
+  padding:22px;
+  text-align:center;
+}
 
-    .header p {
-      margin-top: 6px;
-      opacity: 0.9;
-    }
+.header h1{
+  font-size:28px;
+}
 
-    .container {
-      max-width: 1100px;
-      margin: 30px auto;
-      padding: 0 20px;
-    }
+.header p{
+  margin-top:6px;
+  opacity:.9;
+}
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
-      margin-bottom: 25px;
-    }
+.container{
+  max-width:1150px;
+  margin:25px auto;
+  padding:0 18px;
+}
 
-    .stat {
-      background: white;
-      padding: 22px;
-      border-radius: 12px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-    }
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+  margin-bottom:20px;
+}
 
-    .stat h3 {
-      color: #666;
-      font-size: 14px;
-    }
+.stat{
+  background:white;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 3px 12px rgba(0,0,0,.07);
+}
 
-    .stat strong {
-      display: block;
-      font-size: 28px;
-      margin-top: 8px;
-      color: #128c7e;
-    }
+.stat h3{
+  color:#777;
+  font-size:14px;
+}
 
-    .card {
-      background: white;
-      padding: 25px;
-      border-radius: 14px;
-      margin-bottom: 20px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-    }
+.stat strong{
+  display:block;
+  margin-top:8px;
+  font-size:28px;
+  color:#128c7e;
+}
 
-    .card h2 {
-      margin-bottom: 18px;
-      color: #128c7e;
-    }
+.card{
+  background:white;
+  padding:22px;
+  border-radius:14px;
+  margin-bottom:20px;
+  box-shadow:0 3px 12px rgba(0,0,0,.07);
+}
 
-    input, select, textarea {
-      width: 100%;
-      padding: 13px;
-      margin-top: 8px;
-      margin-bottom: 15px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 15px;
-    }
+.card h2{
+  color:#128c7e;
+  margin-bottom:18px;
+}
 
-    textarea {
-      min-height: 120px;
-      resize: vertical;
-    }
+input,select,textarea{
+  width:100%;
+  padding:12px;
+  border:1px solid #ddd;
+  border-radius:8px;
+  margin-top:7px;
+  margin-bottom:14px;
+  font-size:15px;
+}
 
-    .buttons {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
+textarea{
+  min-height:120px;
+  resize:vertical;
+}
 
-    button {
-      border: none;
-      padding: 12px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 15px;
-      font-weight: bold;
-    }
+button{
+  border:0;
+  padding:11px 17px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:bold;
+  margin:3px;
+}
 
-    .primary {
-      background: #128c7e;
-      color: white;
-    }
+.primary{
+  background:#128c7e;
+  color:white;
+}
 
-    .secondary {
-      background: #e8f5f2;
-      color: #128c7e;
-    }
+.secondary{
+  background:#e8f5f2;
+  color:#128c7e;
+}
 
-    .danger {
-      background: #fee;
-      color: #c00;
-    }
+.danger{
+  background:#ffe9e9;
+  color:#c62828;
+}
 
-    .customer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px;
-      border-bottom: 1px solid #eee;
-      gap: 10px;
-    }
+.file-btn{
+  display:inline-block;
+  background:#e8f5f2;
+  color:#128c7e;
+  padding:11px 17px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:bold;
+  margin-bottom:12px;
+}
 
-    .customer:last-child {
-      border-bottom: none;
-    }
+#csvFile{
+  display:none;
+}
 
-    .customer-info strong {
-      display: block;
-      margin-bottom: 4px;
-    }
+.toolbar{
+  display:grid;
+  grid-template-columns:1fr 220px;
+  gap:10px;
+  margin-bottom:15px;
+}
 
-    .customer-info span {
-      color: #777;
-      font-size: 13px;
-    }
+.select-all{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:12px;
+}
 
-    .badge {
-      background: #e8f5f2;
-      color: #128c7e;
-      padding: 5px 9px;
-      border-radius: 20px;
-      font-size: 12px;
-    }
+.customer{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px 5px;
+  border-bottom:1px solid #eee;
+}
 
-    .empty {
-      text-align: center;
-      color: #888;
-      padding: 30px;
-    }
+.customer:last-child{
+  border-bottom:none;
+}
 
-    @media(max-width: 800px) {
-      .stats {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
+.customer-check{
+  width:20px;
+  height:20px;
+}
 
-    @media(max-width: 500px) {
-      .stats {
-        grid-template-columns: 1fr;
-      }
+.customer-info{
+  flex:1;
+}
 
-      .customer {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-  </style>
+.customer-info strong{
+  display:block;
+  margin-bottom:5px;
+}
+
+.customer-info span{
+  color:#777;
+  font-size:13px;
+}
+
+.badge{
+  display:inline-block;
+  background:#e8f5f2;
+  color:#128c7e;
+  padding:4px 8px;
+  border-radius:15px;
+  font-size:12px;
+  margin-left:5px;
+}
+
+.actions{
+  white-space:nowrap;
+}
+
+.empty{
+  text-align:center;
+  padding:30px;
+  color:#888;
+}
+
+.note{
+  background:#fff8df;
+  padding:12px;
+  border-radius:8px;
+  color:#765b00;
+  font-size:13px;
+  margin-top:12px;
+}
+
+@media(max-width:800px){
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .toolbar{
+    grid-template-columns:1fr;
+  }
+
+  .customer{
+    align-items:flex-start;
+  }
+}
+
+@media(max-width:500px){
+  .stats{
+    grid-template-columns:1fr;
+  }
+
+  .customer{
+    flex-wrap:wrap;
+  }
+
+  .actions{
+    width:100%;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <div class="header">
-    <h1>ELLNORA WhatsApp Manager</h1>
-    <p>Customer Management & WhatsApp Campaign Dashboard</p>
-  </div>
+<div class="header">
+  <h1>ELLNORA WhatsApp Manager</h1>
+  <p>Customer Management & WhatsApp Campaign Dashboard</p>
+</div>
 
-  <div class="container">
+<div class="container">
 
-    <div class="stats">
-      <div class="stat">
-        <h3>Total Customers</h3>
-        <strong id="totalCustomers">0</strong>
-      </div>
+  <!-- STATS -->
 
-      <div class="stat">
-        <h3>Retailers</h3>
-        <strong id="retailers">0</strong>
-      </div>
+  <div class="stats">
 
-      <div class="stat">
-        <h3>Distributors</h3>
-        <strong id="distributors">0</strong>
-      </div>
-
-      <div class="stat">
-        <h3>Campaigns</h3>
-        <strong id="campaigns">0</strong>
-      </div>
+    <div class="stat">
+      <h3>Total Customers</h3>
+      <strong id="totalCustomers">0</strong>
     </div>
 
-    <div class="card">
-      <h2>➕ Add Customer</h2>
+    <div class="stat">
+      <h3>Retailers</h3>
+      <strong id="retailers">0</strong>
+    </div>
 
-      <label>Customer Name</label>
-      <input type="text" id="customerName" placeholder="Enter customer name">
+    <div class="stat">
+      <h3>Distributors</h3>
+      <strong id="distributors">0</strong>
+    </div>
 
-      <label>WhatsApp Number</label>
-      <input type="text" id="customerPhone" placeholder="Example: 919876543210">
+    <div class="stat">
+      <h3>Campaigns</h3>
+      <strong id="campaigns">0</strong>
+    </div>
 
-      <label>Category</label>
-      <select id="customerCategory">
-        <option value="Retailer">Retailer</option>
-        <option value="Distributor">Distributor</option>
-        <option value="General Store">General Store</option>
-        <option value="Beauty Parlour">Beauty Parlour</option>
-        <option value="Ayurvedic Store">Ayurvedic Store</option>
-        <option value="Other">Other</option>
+  </div>
+
+
+  <!-- ADD CUSTOMER -->
+
+  <div class="card">
+
+    <h2>➕ Add Customer</h2>
+
+    <label>Customer Name</label>
+    <input
+      type="text"
+      id="customerName"
+      placeholder="Customer name"
+    >
+
+    <label>WhatsApp Number</label>
+    <input
+      type="text"
+      id="customerPhone"
+      placeholder="Example: 919876543210"
+    >
+
+    <label>Category</label>
+
+    <select id="customerCategory">
+
+      <option value="Retailer">Retailer</option>
+
+      <option value="Distributor">Distributor</option>
+
+      <option value="General Store">
+        General Store
+      </option>
+
+      <option value="Beauty Parlour">
+        Beauty Parlour
+      </option>
+
+      <option value="Ayurvedic Store">
+        Ayurvedic Store
+      </option>
+
+      <option value="Other">Other</option>
+
+    </select>
+
+    <button
+      class="primary"
+      onclick="addCustomer()">
+      Add Customer
+    </button>
+
+  </div>
+
+
+  <!-- IMPORT -->
+
+  <div class="card">
+
+    <h2>📥 Import Customers</h2>
+
+    <p style="margin-bottom:12px;color:#666;">
+      CSV file se multiple customers ek saath add karein.
+    </p>
+
+    <label for="csvFile" class="file-btn">
+      📂 Choose CSV File
+    </label>
+
+    <input
+      type="file"
+      id="csvFile"
+      accept=".csv,text/csv"
+      onchange="importCSV(event)"
+    >
+
+    <button
+      class="secondary"
+      onclick="downloadSampleCSV()">
+      ⬇️ Download Sample CSV
+    </button>
+
+    <div class="note">
+      CSV columns:
+      <b>Name, Phone, Category</b>
+      <br>
+      Example:
+      Rahul,919876543210,Retailer
+    </div>
+
+  </div>
+
+
+  <!-- MESSAGE -->
+
+  <div class="card">
+
+    <h2>💬 WhatsApp Campaign</h2>
+
+    <label>Message</label>
+
+    <textarea
+      id="messageText"
+      placeholder="Type your WhatsApp message here..."
+    ></textarea>
+
+    <button
+      class="primary"
+      onclick="sendSelected()">
+      🟢 Send to Selected
+    </button>
+
+    <button
+      class="secondary"
+      onclick="sendAll()">
+      📢 Send to All
+    </button>
+
+    <div class="note">
+      This version opens WhatsApp for selected customers.
+      Automatic bulk sending is not enabled. Later we can
+      connect the official WhatsApp Business Platform/API.
+    </div>
+
+  </div>
+
+
+  <!-- CUSTOMER LIST -->
+
+  <div class="card">
+
+    <h2>👥 Customer List</h2>
+
+    <div class="toolbar">
+
+      <input
+        type="text"
+        id="searchBox"
+        placeholder="🔎 Search customer..."
+        oninput="renderCustomers()"
+      >
+
+      <select
+        id="filterCategory"
+        onchange="renderCustomers()">
+
+        <option value="All">
+          All Categories
+        </option>
+
+        <option value="Retailer">
+          Retailer
+        </option>
+
+        <option value="Distributor">
+          Distributor
+        </option>
+
+        <option value="General Store">
+          General Store
+        </option>
+
+        <option value="Beauty Parlour">
+          Beauty Parlour
+        </option>
+
+        <option value="Ayurvedic Store">
+          Ayurvedic Store
+        </option>
+
+        <option value="Other">
+          Other
+        </option>
+
       </select>
 
-      <div class="buttons">
-        <button class="primary" onclick="addCustomer()">
-          Add Customer
-        </button>
-
-        <button class="secondary" onclick="clearCustomers()">
-          Clear All
-        </button>
-      </div>
     </div>
 
-    <div class="card">
-      <h2>💬 WhatsApp Message</h2>
 
-      <label>Message</label>
+    <div class="select-all">
 
-      <textarea id="messageText"
-        placeholder="Type your WhatsApp message here..."></textarea>
+      <input
+        type="checkbox"
+        id="selectAll"
+        class="customer-check"
+        onchange="toggleSelectAll()"
+      >
 
-      <div class="buttons">
-        <button class="primary" onclick="sendToAll()">
-          Send to Customers
-        </button>
+      <label for="selectAll">
+        Select All Visible Customers
+      </label>
 
-        <button class="secondary" onclick="sendCampaign()">
-          Start Campaign
-        </button>
-      </div>
-
-      <p style="margin-top:15px;color:#777;font-size:13px;">
-        Note: This version opens WhatsApp for the selected customer.
-        Automatic bulk sending will be connected later through an
-        official WhatsApp Business API workflow.
-      </p>
     </div>
 
-    <div class="card">
-      <h2>👥 Customer List</h2>
 
-      <div id="customerList">
-        <div class="empty">
-          No customers added yet.
-        </div>
-      </div>
-    </div>
+    <div id="customerList"></div>
 
   </div>
 
-  <script>
-
-    let customers =
-      JSON.parse(localStorage.getItem("ellnoraCustomers")) || [];
-
-    let campaigns =
-      Number(localStorage.getItem("ellnoraCampaigns")) || 0;
+</div>
 
 
-    function saveData() {
-      localStorage.setItem(
-        "ellnoraCustomers",
-        JSON.stringify(customers)
-      );
+<script>
 
-      localStorage.setItem(
-        "ellnoraCampaigns",
-        campaigns
-      );
-    }
+let customers =
+  JSON.parse(
+    localStorage.getItem("ellnoraCustomers")
+  ) || [];
 
-
-    function addCustomer() {
-
-      const name =
-        document.getElementById("customerName").value.trim();
-
-      const phone =
-        document.getElementById("customerPhone").value.trim();
-
-      const category =
-        document.getElementById("customerCategory").value;
+let campaigns =
+  Number(
+    localStorage.getItem("ellnoraCampaigns")
+  ) || 0;
 
 
-      if (!name || !phone) {
-        alert("Please enter customer name and WhatsApp number.");
+/* SAVE */
+
+function saveData(){
+
+  localStorage.setItem(
+    "ellnoraCustomers",
+    JSON.stringify(customers)
+  );
+
+  localStorage.setItem(
+    "ellnoraCampaigns",
+    campaigns
+  );
+
+}
+
+
+/* ADD CUSTOMER */
+
+function addCustomer(){
+
+  const name =
+    document
+      .getElementById("customerName")
+      .value
+      .trim();
+
+  const phone =
+    document
+      .getElementById("customerPhone")
+      .value
+      .replace(/\D/g,"");
+
+  const category =
+    document
+      .getElementById("customerCategory")
+      .value;
+
+
+  if(!name || !phone){
+
+    alert(
+      "Customer name aur WhatsApp number enter karein."
+    );
+
+    return;
+
+  }
+
+
+  if(phone.length < 10){
+
+    alert(
+      "Please enter a valid WhatsApp number."
+    );
+
+    return;
+
+  }
+
+
+  customers.push({
+
+    id:Date.now(),
+
+    name:name,
+
+    phone:phone,
+
+    category:category,
+
+    selected:false
+
+  });
+
+
+  saveData();
+
+  document.getElementById("customerName").value="";
+  document.getElementById("customerPhone").value="";
+
+  renderCustomers();
+
+}
+
+
+/* IMPORT CSV */
+
+function importCSV(event){
+
+  const file =
+    event.target.files[0];
+
+  if(!file){
+    return;
+  }
+
+
+  const reader =
+    new FileReader();
+
+
+  reader.onload =
+    function(e){
+
+      const text =
+        e.target.result;
+
+
+      const lines =
+        text
+          .split(/\r?\n/)
+          .filter(line => line.trim());
+
+
+      if(lines.length < 2){
+
+        alert(
+          "CSV mein customer data nahi mila."
+        );
+
         return;
+
       }
 
 
-      customers.push({
-        id: Date.now(),
-        name: name,
-        phone: phone.replace(/\D/g, ""),
-        category: category
-      });
+      let imported = 0;
+
+
+      for(let i=1;i<lines.length;i++){
+
+        const columns =
+          parseCSVLine(lines[i]);
+
+
+        if(columns.length < 2){
+          continue;
+        }
+
+
+        const name =
+          columns[0].trim();
+
+        const phone =
+          columns[1]
+            .replace(/\D/g,"")
+            .trim();
+
+        const category =
+          columns[2]
+            ? columns[2].trim()
+            : "Other";
+
+
+        if(
+          !name ||
+          phone.length < 10
+        ){
+          continue;
+        }
+
+
+        const exists =
+          customers.some(
+            c => c.phone === phone
+          );
+
+
+        if(!exists){
+
+          customers.push({
+
+            id:Date.now() + i,
+
+            name:name,
+
+            phone:phone,
+
+            category:category,
+
+            selected:false
+
+          });
+
+          imported++;
+
+        }
+
+      }
 
 
       saveData();
 
-      document.getElementById("customerName").value = "";
-      document.getElementById("customerPhone").value = "";
-
       renderCustomers();
-    }
 
-
-    function deleteCustomer(id) {
-
-      customers =
-        customers.filter(customer => customer.id !== id);
-
-      saveData();
-
-      renderCustomers();
-    }
-
-
-    function clearCustomers() {
-
-      if (!customers.length) return;
-
-      if (!confirm("Delete all customers?")) return;
-
-      customers = [];
-
-      saveData();
-
-      renderCustomers();
-    }
-
-
-    function sendWhatsApp(phone) {
-
-      const message =
-        document.getElementById("messageText").value.trim();
-
-      if (!message) {
-        alert("Please enter a message first.");
-        return;
-      }
-
-      const url =
-        "https://wa.me/" +
-        phone +
-        "?text=" +
-        encodeURIComponent(message);
-
-      window.open(url, "_blank");
-    }
-
-
-    function sendToAll() {
-
-      const message =
-        document.getElementById("messageText").value.trim();
-
-      if (!message) {
-        alert("Please enter a message first.");
-        return;
-      }
-
-      if (!customers.length) {
-        alert("Please add customers first.");
-        return;
-      }
 
       alert(
-        "WhatsApp will be opened for each customer. " +
-        "You can send the message manually."
+        imported +
+        " customers successfully imported."
       );
 
-      customers.forEach((customer, index) => {
+    };
 
-        setTimeout(() => {
-          sendWhatsApp(customer.phone);
-        }, index * 1500);
 
-      });
+  reader.readAsText(file);
 
-      campaigns++;
+  event.target.value="";
 
-      saveData();
+}
+
+
+/* CSV PARSER */
+
+function parseCSVLine(line){
+
+  const result=[];
+
+  let current="";
+
+  let insideQuotes=false;
+
+
+  for(let i=0;i<line.length;i++){
+
+    const char=line[i];
+
+
+    if(char === '"' &&
+       line[i+1] === '"'){
+
+      current+='"';
+
+      i++;
+
+      continue;
+
     }
 
 
-    function sendCampaign() {
+    if(char === '"'){
 
-      if (!customers.length) {
-        alert("Please add customers first.");
-        return;
-      }
+      insideQuotes=!insideQuotes;
 
-      const message =
-        document.getElementById("messageText").value.trim();
+      continue;
 
-      if (!message) {
-        alert("Please enter a message first.");
-        return;
-      }
-
-      campaigns++;
-
-      saveData();
-
-      alert(
-        "Campaign created successfully.\n\n" +
-        "Customers: " + customers.length
-      );
-
-      updateStats();
     }
 
 
-    function renderCustomers() {
+    if(char === "," &&
+       !insideQuotes){
 
-      const list =
-        document.getElementById("customerList");
+      result.push(current);
+
+      current="";
+
+    }else{
+
+      current+=char;
+
+    }
+
+  }
 
 
-      if (!customers.length) {
+  result.push(current);
 
-        list.innerHTML =
-          '<div class="empty">No customers added yet.</div>';
+  return result;
 
-        updateStats();
-
-        return;
-      }
+}
 
 
-      list.innerHTML = customers.map(customer => `
+/* SAMPLE CSV */
 
-        <div class="customer">
+function downloadSampleCSV(){
 
-          <div class="customer-info">
+  const csv =
+`Name,Phone,Category
+Rahul,919876543210,Retailer
+Amit,919876543211,Distributor
+Neha,919876543212,Beauty Parlour
+`;
 
-            <strong>${escapeHtml(customer.name)}</strong>
+  const blob =
+    new Blob(
+      [csv],
+      {type:"text/csv"}
+    );
 
-            <span>
-              +${escapeHtml(customer.phone)}
-              &nbsp; • &nbsp;
-              <span class="badge">
-                ${escapeHtml(customer.category)}
-              </span>
+
+  const url =
+    URL.createObjectURL(blob);
+
+
+  const a =
+    document.createElement("a");
+
+  a.href=url;
+
+  a.download="ellnora-customers-sample.csv";
+
+  a.click();
+
+
+  URL.revokeObjectURL(url);
+
+}
+
+
+/* FILTERED CUSTOMERS */
+
+function getVisibleCustomers(){
+
+  const search =
+    document
+      .getElementById("searchBox")
+      .value
+      .toLowerCase()
+      .trim();
+
+
+  const category =
+    document
+      .getElementById("filterCategory")
+      .value;
+
+
+  return customers.filter(customer => {
+
+    const matchesSearch =
+      customer.name
+        .toLowerCase()
+        .includes(search)
+      ||
+      customer.phone
+        .includes(search);
+
+
+    const matchesCategory =
+      category === "All"
+      ||
+      customer.category === category;
+
+
+    return matchesSearch &&
+           matchesCategory;
+
+  });
+
+}
+
+
+/* RENDER */
+
+function renderCustomers(){
+
+  const list =
+    document.getElementById(
+      "customerList"
+    );
+
+
+  const visible =
+    getVisibleCustomers();
+
+
+  document.getElementById(
+    "selectAll"
+  ).checked=false;
+
+
+  if(!visible.length){
+
+    list.innerHTML =
+      '<div class="empty">' +
+      'No customers found.' +
+      '</div>';
+
+    updateStats();
+
+    return;
+
+  }
+
+
+  list.innerHTML =
+    visible.map(customer => `
+
+      <div class="customer">
+
+        <input
+          type="checkbox"
+          class="customer-check"
+          ${customer.selected ? "checked" : ""}
+          onchange="toggleCustomer(${customer.id})"
+        >
+
+        <div class="customer-info">
+
+          <strong>
+            ${escapeHTML(customer.name)}
+          </strong>
+
+          <span>
+            +${escapeHTML(customer.phone)}
+
+            <span class="badge">
+              ${escapeHTML(customer.category)}
             </span>
-
-          </div>
-
-          <div class="buttons">
-
-            <button
-              class="primary"
-              onclick="sendWhatsApp('${customer.phone}')">
-              WhatsApp
-            </button>
-
-            <button
-              class="danger"
-              onclick="deleteCustomer(${customer.id})">
-              Delete
-            </button>
-
-          </div>
+          </span>
 
         </div>
 
-      `).join("");
+        <div class="actions">
+
+          <button
+            class="primary"
+            onclick="sendWhatsApp('${customer.phone}')">
+            WhatsApp
+          </button>
+
+          <button
+            class="danger"
+            onclick="deleteCustomer(${customer.id})">
+            Delete
+          </button>
+
+        </div>
+
+      </div>
+
+    `).join("");
 
 
-      updateStats();
+  updateStats();
+
+}
+
+
+/* SELECT CUSTOMER */
+
+function toggleCustomer(id){
+
+  const customer =
+    customers.find(
+      c => c.id === id
+    );
+
+
+  if(customer){
+
+    customer.selected =
+      !customer.selected;
+
+    saveData();
+
+  }
+
+}
+
+
+/* SELECT ALL */
+
+function toggleSelectAll(){
+
+  const checked =
+    document
+      .getElementById("selectAll")
+      .checked;
+
+
+  const visible =
+    getVisibleCustomers();
+
+
+  visible.forEach(customer => {
+
+    customer.selected=checked;
+
+  });
+
+
+  saveData();
+
+  renderCustomers();
+
+}
+
+
+/* DELETE */
+
+function deleteCustomer(id){
+
+  if(
+    !confirm(
+      "Is customer ko delete karna hai?"
+    )
+  ){
+    return;
+  }
+
+
+  customers =
+    customers.filter(
+      c => c.id !== id
+    );
+
+
+  saveData();
+
+  renderCustomers();
+
+}
+
+
+/* WHATSAPP */
+
+function sendWhatsApp(phone){
+
+  const message =
+    document
+      .getElementById("messageText")
+      .value
+      .trim();
+
+
+  if(!message){
+
+    alert(
+      "Pehle message enter karein."
+    );
+
+    return;
+
+  }
+
+
+  const url =
+    "https://wa.me/" +
+    phone +
+    "?text=" +
+    encodeURIComponent(message);
+
+
+  window.open(
+    url,
+    "_blank"
+  );
+
+}
+
+
+/* SEND SELECTED */
+
+function sendSelected(){
+
+  const selected =
+    customers.filter(
+      c => c.selected
+    );
+
+
+  if(!selected.length){
+
+    alert(
+      "Pehle customers select karein."
+    );
+
+    return;
+
+  }
+
+
+  const message =
+    document
+      .getElementById("messageText")
+      .value
+      .trim();
+
+
+  if(!message){
+
+    alert(
+      "Pehle message enter karein."
+    );
+
+    return;
+
+  }
+
+
+  selected.forEach(
+    (customer,index) => {
+
+      setTimeout(
+        () => {
+
+          sendWhatsApp(
+            customer.phone
+          );
+
+        },
+        index * 1500
+      );
+
     }
+  );
 
 
-    function updateStats() {
+  campaigns++;
 
-      document.getElementById("totalCustomers")
-        .textContent = customers.length;
+  saveData();
 
-      document.getElementById("retailers")
-        .textContent =
-          customers.filter(c =>
-            c.category === "Retailer"
-          ).length;
+  updateStats();
 
-      document.getElementById("distributors")
-        .textContent =
-          customers.filter(c =>
-            c.category === "Distributor"
-          ).length;
+}
 
-      document.getElementById("campaigns")
-        .textContent = campaigns;
+
+/* SEND ALL */
+
+function sendAll(){
+
+  const visible =
+    getVisibleCustomers();
+
+
+  if(!visible.length){
+
+    alert(
+      "Koi customer available nahi hai."
+    );
+
+    return;
+
+  }
+
+
+  const message =
+    document
+      .getElementById("messageText")
+      .value
+      .trim();
+
+
+  if(!message){
+
+    alert(
+      "Pehle message enter karein."
+    );
+
+    return;
+
+  }
+
+
+  visible.forEach(
+    (customer,index) => {
+
+      setTimeout(
+        () => {
+
+          sendWhatsApp(
+            customer.phone
+          );
+
+        },
+        index * 1500
+      );
+
     }
+  );
 
 
-    function escapeHtml(text) {
+  campaigns++;
 
-      return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
+  saveData();
+
+  updateStats();
+
+}
 
 
-    renderCustomers();
+/* STATS */
 
-  </script>
+function updateStats(){
+
+  document.getElementById(
+    "totalCustomers"
+  ).textContent =
+    customers.length;
+
+
+  document.getElementById(
+    "retailers"
+  ).textContent =
+    customers.filter(
+      c => c.category === "Retailer"
+    ).length;
+
+
+  document.getElementById(
+    "distributors"
+  ).textContent =
+    customers.filter(
+      c => c.category === "Distributor"
+    ).length;
+
+
+  document.getElementById(
+    "campaigns"
+  ).textContent =
+    campaigns;
+
+}
+
+
+/* ESCAPE HTML */
+
+function escapeHTML(text){
+
+  return String(text)
+
+    .replace(/&/g,"&amp;")
+
+    .replace(/</g,"&lt;")
+
+    .replace(/>/g,"&gt;")
+
+    .replace(/"/g,"&quot;")
+
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* INITIAL LOAD */
+
+renderCustomers();
+
+</script>
 
 </body>
 </html>
