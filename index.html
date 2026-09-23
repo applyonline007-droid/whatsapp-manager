@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ellnora WhatsApp Manager</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f7f6;
+      color: #222;
+    }
+
+    .header {
+      background: #128c7e;
+      color: white;
+      padding: 22px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 28px;
+    }
+
+    .header p {
+      margin-top: 6px;
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .stat {
+      background: white;
+      padding: 22px;
+      border-radius: 12px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    .stat h3 {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 28px;
+      margin-top: 8px;
+      color: #128c7e;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 14px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    .card h2 {
+      margin-bottom: 18px;
+      color: #128c7e;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 13px;
+      margin-top: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .primary {
+      background: #128c7e;
+      color: white;
+    }
+
+    .secondary {
+      background: #e8f5f2;
+      color: #128c7e;
+    }
+
+    .danger {
+      background: #fee;
+      color: #c00;
+    }
+
+    .customer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+      gap: 10px;
+    }
+
+    .customer:last-child {
+      border-bottom: none;
+    }
+
+    .customer-info strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .customer-info span {
+      color: #777;
+      font-size: 13px;
+    }
+
+    .badge {
+      background: #e8f5f2;
+      color: #128c7e;
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 12px;
+    }
+
+    .empty {
+      text-align: center;
+      color: #888;
+      padding: 30px;
+    }
+
+    @media(max-width: 800px) {
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media(max-width: 500px) {
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .customer {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <h1>ELLNORA WhatsApp Manager</h1>
+    <p>Customer Management & WhatsApp Campaign Dashboard</p>
+  </div>
+
+  <div class="container">
+
+    <div class="stats">
+      <div class="stat">
+        <h3>Total Customers</h3>
+        <strong id="totalCustomers">0</strong>
+      </div>
+
+      <div class="stat">
+        <h3>Retailers</h3>
+        <strong id="retailers">0</strong>
+      </div>
+
+      <div class="stat">
+        <h3>Distributors</h3>
+        <strong id="distributors">0</strong>
+      </div>
+
+      <div class="stat">
+        <h3>Campaigns</h3>
+        <strong id="campaigns">0</strong>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>➕ Add Customer</h2>
+
+      <label>Customer Name</label>
+      <input type="text" id="customerName" placeholder="Enter customer name">
+
+      <label>WhatsApp Number</label>
+      <input type="text" id="customerPhone" placeholder="Example: 919876543210">
+
+      <label>Category</label>
+      <select id="customerCategory">
+        <option value="Retailer">Retailer</option>
+        <option value="Distributor">Distributor</option>
+        <option value="General Store">General Store</option>
+        <option value="Beauty Parlour">Beauty Parlour</option>
+        <option value="Ayurvedic Store">Ayurvedic Store</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <div class="buttons">
+        <button class="primary" onclick="addCustomer()">
+          Add Customer
+        </button>
+
+        <button class="secondary" onclick="clearCustomers()">
+          Clear All
+        </button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>💬 WhatsApp Message</h2>
+
+      <label>Message</label>
+
+      <textarea id="messageText"
+        placeholder="Type your WhatsApp message here..."></textarea>
+
+      <div class="buttons">
+        <button class="primary" onclick="sendToAll()">
+          Send to Customers
+        </button>
+
+        <button class="secondary" onclick="sendCampaign()">
+          Start Campaign
+        </button>
+      </div>
+
+      <p style="margin-top:15px;color:#777;font-size:13px;">
+        Note: This version opens WhatsApp for the selected customer.
+        Automatic bulk sending will be connected later through an
+        official WhatsApp Business API workflow.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>👥 Customer List</h2>
+
+      <div id="customerList">
+        <div class="empty">
+          No customers added yet.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+
+    let customers =
+      JSON.parse(localStorage.getItem("ellnoraCustomers")) || [];
+
+    let campaigns =
+      Number(localStorage.getItem("ellnoraCampaigns")) || 0;
+
+
+    function saveData() {
+      localStorage.setItem(
+        "ellnoraCustomers",
+        JSON.stringify(customers)
+      );
+
+      localStorage.setItem(
+        "ellnoraCampaigns",
+        campaigns
+      );
+    }
+
+
+    function addCustomer() {
+
+      const name =
+        document.getElementById("customerName").value.trim();
+
+      const phone =
+        document.getElementById("customerPhone").value.trim();
+
+      const category =
+        document.getElementById("customerCategory").value;
+
+
+      if (!name || !phone) {
+        alert("Please enter customer name and WhatsApp number.");
+        return;
+      }
+
+
+      customers.push({
+        id: Date.now(),
+        name: name,
+        phone: phone.replace(/\D/g, ""),
+        category: category
+      });
+
+
+      saveData();
+
+      document.getElementById("customerName").value = "";
+      document.getElementById("customerPhone").value = "";
+
+      renderCustomers();
+    }
+
+
+    function deleteCustomer(id) {
+
+      customers =
+        customers.filter(customer => customer.id !== id);
+
+      saveData();
+
+      renderCustomers();
+    }
+
+
+    function clearCustomers() {
+
+      if (!customers.length) return;
+
+      if (!confirm("Delete all customers?")) return;
+
+      customers = [];
+
+      saveData();
+
+      renderCustomers();
+    }
+
+
+    function sendWhatsApp(phone) {
+
+      const message =
+        document.getElementById("messageText").value.trim();
+
+      if (!message) {
+        alert("Please enter a message first.");
+        return;
+      }
+
+      const url =
+        "https://wa.me/" +
+        phone +
+        "?text=" +
+        encodeURIComponent(message);
+
+      window.open(url, "_blank");
+    }
+
+
+    function sendToAll() {
+
+      const message =
+        document.getElementById("messageText").value.trim();
+
+      if (!message) {
+        alert("Please enter a message first.");
+        return;
+      }
+
+      if (!customers.length) {
+        alert("Please add customers first.");
+        return;
+      }
+
+      alert(
+        "WhatsApp will be opened for each customer. " +
+        "You can send the message manually."
+      );
+
+      customers.forEach((customer, index) => {
+
+        setTimeout(() => {
+          sendWhatsApp(customer.phone);
+        }, index * 1500);
+
+      });
+
+      campaigns++;
+
+      saveData();
+    }
+
+
+    function sendCampaign() {
+
+      if (!customers.length) {
+        alert("Please add customers first.");
+        return;
+      }
+
+      const message =
+        document.getElementById("messageText").value.trim();
+
+      if (!message) {
+        alert("Please enter a message first.");
+        return;
+      }
+
+      campaigns++;
+
+      saveData();
+
+      alert(
+        "Campaign created successfully.\n\n" +
+        "Customers: " + customers.length
+      );
+
+      updateStats();
+    }
+
+
+    function renderCustomers() {
+
+      const list =
+        document.getElementById("customerList");
+
+
+      if (!customers.length) {
+
+        list.innerHTML =
+          '<div class="empty">No customers added yet.</div>';
+
+        updateStats();
+
+        return;
+      }
+
+
+      list.innerHTML = customers.map(customer => `
+
+        <div class="customer">
+
+          <div class="customer-info">
+
+            <strong>${escapeHtml(customer.name)}</strong>
+
+            <span>
+              +${escapeHtml(customer.phone)}
+              &nbsp; • &nbsp;
+              <span class="badge">
+                ${escapeHtml(customer.category)}
+              </span>
+            </span>
+
+          </div>
+
+          <div class="buttons">
+
+            <button
+              class="primary"
+              onclick="sendWhatsApp('${customer.phone}')">
+              WhatsApp
+            </button>
+
+            <button
+              class="danger"
+              onclick="deleteCustomer(${customer.id})">
+              Delete
+            </button>
+
+          </div>
+
+        </div>
+
+      `).join("");
+
+
+      updateStats();
+    }
+
+
+    function updateStats() {
+
+      document.getElementById("totalCustomers")
+        .textContent = customers.length;
+
+      document.getElementById("retailers")
+        .textContent =
+          customers.filter(c =>
+            c.category === "Retailer"
+          ).length;
+
+      document.getElementById("distributors")
+        .textContent =
+          customers.filter(c =>
+            c.category === "Distributor"
+          ).length;
+
+      document.getElementById("campaigns")
+        .textContent = campaigns;
+    }
+
+
+    function escapeHtml(text) {
+
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+
+    renderCustomers();
+
+  </script>
+
+</body>
+</html>
